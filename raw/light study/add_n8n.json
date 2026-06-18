@@ -1,0 +1,124 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -448,
+        16
+      ],
+      "id": "14d784ce-e83b-4624-8994-0e3fc72b8b6f",
+      "name": "When chat message received",
+      "webhookId": "7514fdfb-654e-4010-8cf5-e6d1cbd1dc09"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "덧셈을 하기 위해서는 출력을 다음과 같이 만들어\nex) { \"numbers\": [1, 2, 3] }"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -224,
+        16
+      ],
+      "id": "bdb01116-59ef-4940-8e77-00a1e351f1c8",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "gemma4:e4b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        240
+      ],
+      "id": "bda03035-fe56-4e19-8e93-7396e4789805",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "51vNi60J6MQbNc1a",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Sums a list of numbers and returns the total. Use this when the user asks to add up, total, or calculate the sum of a set of numeric values.",
+        "jsCode": "\nreturn query.numbers.reduce((a, b) => a + b, 0);",
+        "specifyInputSchema": true,
+        "jsonSchemaExample": "{\n\t\"numbers\": [1, 2, 3, 4]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.3,
+      "position": [
+        -80,
+        240
+      ],
+      "id": "06db3fe5-6864-4fc8-b776-16d933ba84d2",
+      "name": "Code Tool"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "Code Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "d2505222-841f-47f9-bc16-251624c8f70c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "42fd2ad3bc59c39a428027eefdf148eb7697b3c197a4d7e91e83073f0936e093"
+  },
+  "nodeGroups": [],
+  "id": "RtP5v2S2tEaagZro",
+  "tags": []
+}
