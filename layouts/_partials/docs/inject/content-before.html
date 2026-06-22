@@ -1,0 +1,11 @@
+{{ if and .IsPage (or .Date .Params.tags .Params.sources) }}
+<div class="meta">
+  {{ if not .Date.IsZero }}<p>date: {{ .Date.Format "2006-01-02" }}</p>{{ end }}
+  {{ if .Params.tags }}<p>tags: {{ delimit .Params.tags ", " }}</p>{{ end }}
+  {{ if .Params.sources }}
+  <ul class="source">
+    {{ range .Params.sources }}<li>{{ . }}</li>{{ end }}
+  </ul>
+  {{ end }}
+</div>
+{{ end }}

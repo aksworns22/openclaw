@@ -1,0 +1,42 @@
+:root {
+  --color-link: #0969da;
+}
+
+.markdown .mermaid {
+  margin: 1.2em 0;
+  text-align: center;
+}
+
+.markdown details {
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  padding: 0.6em 1em;
+  margin: 1em 0;
+}
+
+.markdown details summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.markdown details[open] summary {
+  margin-bottom: 0.6em;
+}
+
+.book-page .meta {
+  color: var(--gray-500);
+  font-size: 0.9em;
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  padding: 0.8em 1.2em;
+  margin-bottom: 1.5em;
+}
+
+.book-page .meta p {
+  margin: 0.3em 0;
+}
+
+.book-page .meta ul.source {
+  margin: 0.3em 0 0;
+  padding-left: 1.2em;
+}
