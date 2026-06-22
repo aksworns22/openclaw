@@ -9,7 +9,7 @@
 <body>
 <div class="meta">
   <p>date: 2026-06-22</p>
-  <p>tags: graphrag, rag, embedding, vector-store, langchain, chunking, neo4j, knowledge-graph</p>
+  <p>tags: graphrag, rag, embedding, vector-store, langchain, chunking, neo4j, knowledge-graph, llm, scaling, alignment, sft, rlhf</p>
   <ul class="source">
     <li>raw/graph_rag_tutorial/2026_06_22/test_embedding.py</li>
     <li>raw/graph_rag_tutorial/2026_06_22/similarity_manual.py</li>
@@ -20,6 +20,7 @@
     <li>raw/graph_rag_tutorial/2026_06_22/rag_vectorstore.py</li>
     <li>raw/graph_rag_tutorial/2026_06_22/test_neo4j.py</li>
     <li>raw/graph_rag_tutorial/2026_06_22/test_neo4j_data.py</li>
+    <li>raw/llm을 활용한 실전 AI 애플리케이션 개발/01. LLM 지도.md</li>
   </ul>
 </div>
 
@@ -29,6 +30,7 @@
     <li><a href="#chunking">텍스트 청킹</a></li>
     <li><a href="#rag-limitations">벡터 검색 기반 RAG와 그 한계</a></li>
     <li><a href="#neo4j-basics">Neo4j로 그래프 데이터베이스 다루기</a></li>
+    <li><a href="#scaling-alignment">언어 모델이 챗GPT가 되기까지: 스케일링과 정렬</a></li>
   </ul>
 </nav>
 
@@ -136,6 +138,24 @@ graph LR
 </details>
 
 <p>이 노드-관계 모델이 다음 단계의 핵심이다. 위에서 확인한 "다단계 추론", "관계 질문" 같은 한계를, 문서에서 추출한 개체와 관계를 Neo4j 그래프로 저장해두고 그래프 탐색으로 보완하는 것이 GraphRAG의 방향이다.</p>
+
+<h2 id="scaling-alignment">언어 모델이 챗GPT가 되기까지: 스케일링과 정렬</h2>
+
+<p>모델 크기와 학습 데이터가 커질수록 성능이 좋아지는 이유를, 학습 과정 자체를 <strong>데이터 압축</strong>으로 보는 관점에서 다시 짚었다. 언어 모델은 학습 데이터를 그대로 외우는 게 아니라, 데이터 안에서 공통되고 중요한 패턴만 남기는 손실 압축을 수행한다고 볼 수 있다. 이 관점에서는 학습 데이터의 크기가 모델이 의미 있게 키울 수 있는 최대 크기의 상한이 된다 — 데이터가 적은데 모델만 키우면 압축할 패턴이 부족해 과적합으로 이어지기 쉽다.</p>
+
+<p>GPT-3 같은 사전 학습 모델은 "다음 단어 예측"만 학습했을 뿐, 사용자의 요청 의도에 맞게 답하도록 훈련되지는 않았다. LLM의 답변을 사용자 의도에 맞추는 과정을 <strong>정렬(alignment)</strong>이라고 부르고, GPT-3를 챗GPT로 바꾼 것이 바로 이 정렬 작업이다.</p>
+
+<div class="mermaid">
+graph LR
+  pretrain["사전 학습<br>(다음 단어 예측)"] --> sft["지도 미세 조정(SFT)<br>지시 데이터셋으로 추가 학습"]
+  sft --> rlhf["RLHF<br>사람 피드백 기반 강화학습"]
+  rlhf --> aligned["정렬된 모델<br>(예: ChatGPT)"]
+</div>
+
+<ul>
+  <li><strong>지도 미세 조정(SFT)</strong>: 정렬의 핵심 과정. 사용자의 요청·지시와 그에 대한 적절한 응답을 정리한 <strong>지시 데이터셋</strong>으로 모델을 추가 학습시킨다.</li>
+  <li><strong>RLHF</strong>: 사람의 피드백(어떤 답변이 더 나은지에 대한 선호)을 보상 신호로 활용해 모델을 강화 학습시키는 단계. SFT만으로 다 잡지 못하는 답변의 품질·안전성을 추가로 조정한다.</li>
+</ul>
 
 <script>mermaid.initialize({ startOnLoad: true });</script>
 </body>
